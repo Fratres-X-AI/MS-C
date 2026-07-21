@@ -22,9 +22,11 @@ GOLDEN_SEED = 7
 
 
 def _sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    h.update(path.read_bytes())
-    return h.hexdigest()
+    data = path.read_bytes()
+    # Text fixtures: hash LF-normalized bytes so Windows CRLF checkouts match CI.
+    if path.suffix.lower() in {".json", ".md", ".txt", ".csv"}:
+        data = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(data).hexdigest()
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -49,7 +51,7 @@ def regenerate_golden() -> dict[str, Any]:
         "steps": GOLDEN_STEPS,
         "detector": "surrogate_v1",
         "evidence_class": "digital_surrogate_unvalidated",
-        "files": {str(p.relative_to(GOLDEN)).replace("\\", "/"): _sha256(p) for p in files},
+        "files": {p.relative_to(GOLDEN).as_posix(): _sha256(p) for p in files},
     }
     (GOLDEN / "reproduce_manifest.json").write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8"

@@ -6,8 +6,8 @@
   "detector": "surrogate_v1",
   "evidence_class": "digital_surrogate_unvalidated",
   "files": {
-    "kit_manifest.json": "b991b6d89db47183b50f53a7ce8e566bf89dff6e7f40933e101885b54ecb171b",
-    "scorecard.json": "d6b166db0c50dae3fd7f69061aa10851b054de76ef757e3aaf9861489d6197d8",
+    "kit_manifest.json": "577c2b322fef824901a25c8efc50f8d165e64f7fa88bfd75c3882e3c42f9b9a9",
+    "scorecard.json": "6e60e6ab3a14c11e94e9edfaacc439ca30cb685bb6076de714bb3be15b163f14",
     "tiles/pipeline_seed7_emis.png": "157f93da96eab1567d0d29cd7759b09d0582d0ba0f9bea76cfc9e81f232b787e",
     "tiles/pipeline_seed7_sheet.png": "fc1c36f04974ed4cc6932f633f8600cfbb1d25f859f2f3fb64736f3e129206e8",
     "tiles/pipeline_seed7_tile.png": "112567dbaf8c298a75f41dbd31a54fb0f69700242b483179181d1ceaf7c48d4c",
