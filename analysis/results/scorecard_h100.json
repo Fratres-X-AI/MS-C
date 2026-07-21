@@ -1,0 +1,90 @@
+{
+  "summary": {
+    "detector": "yolo",
+    "evidence_class": "digital_surrogate_unvalidated",
+    "sites": [
+      "substation",
+      "tank_pad",
+      "pipeline"
+    ],
+    "nominal_mean_collapse_vs_uncovered": 0.0,
+    "adversarial_mean_collapse_vs_uncovered": 0.0,
+    "nominal_mean_mantle_confidence": 0.0,
+    "adversarial_mean_mantle_confidence": 0.0,
+    "note": "Planning MoE only (A-013). Not a UAS defeat rate. Adversarial stack uses held-out oblique+harsh lighting."
+  },
+  "by_site": {
+    "substation": {
+      "nominal": {
+        "uncovered": 0.0,
+        "commercial": 0.0,
+        "random_noise": 0.0,
+        "mantle": 0.0,
+        "collapse_vs_uncovered": 0.0,
+        "collapse_vs_commercial": 0.0
+      },
+      "adversarial": {
+        "uncovered": 0.0,
+        "commercial": 0.0,
+        "random_noise": 0.0,
+        "mantle": 0.0,
+        "collapse_vs_uncovered": 0.0,
+        "collapse_vs_commercial": 0.0
+      },
+      "optimize": {
+        "steps": 400,
+        "baseline_score": 0.0,
+        "best_score": 0.0,
+        "seed": 7
+      }
+    },
+    "tank_pad": {
+      "nominal": {
+        "uncovered": 0.0,
+        "commercial": 0.0,
+        "random_noise": 0.0,
+        "mantle": 0.0,
+        "collapse_vs_uncovered": 0.0,
+        "collapse_vs_commercial": 0.0
+      },
+      "adversarial": {
+        "uncovered": 0.0,
+        "commercial": 0.0,
+        "random_noise": 0.0,
+        "mantle": 0.0,
+        "collapse_vs_uncovered": 0.0,
+        "collapse_vs_commercial": 0.0
+      },
+      "optimize": {
+        "steps": 400,
+        "baseline_score": 0.0,
+        "best_score": 0.0,
+        "seed": 7
+      }
+    },
+    "pipeline": {
+      "nominal": {
+        "uncovered": 0.0,
+        "commercial": 0.0,
+        "random_noise": 0.0,
+        "mantle": 0.0,
+        "collapse_vs_uncovered": 0.0,
+        "collapse_vs_commercial": 0.0
+      },
+      "adversarial": {
+        "uncovered": 0.0,
+        "commercial": 0.0,
+        "random_noise": 0.0,
+        "mantle": 0.0,
+        "collapse_vs_uncovered": 0.0,
+        "collapse_vs_commercial": 0.0
+      },
+      "optimize": {
+        "steps": 400,
+        "baseline_score": 0.0,
+        "best_score": 0.0,
+        "seed": 7
+      }
+    }
+  }
+}
