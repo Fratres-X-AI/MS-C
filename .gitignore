@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.tgz
+
+# Large / ephemeral run outputs — keep golden manifests
+analysis/results/runs/**
+!analysis/results/runs/.gitkeep
+analysis/results/kits/**
+!analysis/results/kits/.gitkeep
+!analysis/results/golden/
+demo_outputs/
+
+# Optional heavy detector weights
+weights/
+*.pt
+*.onnx

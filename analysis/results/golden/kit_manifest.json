@@ -1,0 +1,99 @@
+{
+  "product": "MS-C Mantle",
+  "version": "0.1.0",
+  "evidence_class": "digital_surrogate_unvalidated",
+  "kits": [
+    {
+      "site_class": "substation",
+      "seed": 7,
+      "tile_png": "tiles/substation_seed7_tile.png",
+      "sheet_png": "tiles/substation_seed7_sheet.png",
+      "emis_png": "tiles/substation_seed7_emis.png",
+      "tile_px": 32,
+      "coverage_m2_planning": 25.0,
+      "mean_emissivity_planning": 0.5692675113677979,
+      "digital_best_confidence": 0.19395114570439934,
+      "digital_baseline_confidence": 0.20512245477778557,
+      "install_notes": "Planning only. Orient sheets with seam marks aligned. Re-audit after weather events. Not a field authorization."
+    },
+    {
+      "site_class": "tank_pad",
+      "seed": 7,
+      "tile_png": "tiles/tank_pad_seed7_tile.png",
+      "sheet_png": "tiles/tank_pad_seed7_sheet.png",
+      "emis_png": "tiles/tank_pad_seed7_emis.png",
+      "tile_px": 32,
+      "coverage_m2_planning": 25.0,
+      "mean_emissivity_planning": 0.5816210508346558,
+      "digital_best_confidence": 0.18566778493476926,
+      "digital_baseline_confidence": 0.08975833374880235,
+      "install_notes": "Planning only. Orient sheets with seam marks aligned. Re-audit after weather events. Not a field authorization."
+    },
+    {
+      "site_class": "pipeline",
+      "seed": 7,
+      "tile_png": "tiles/pipeline_seed7_tile.png",
+      "sheet_png": "tiles/pipeline_seed7_sheet.png",
+      "emis_png": "tiles/pipeline_seed7_emis.png",
+      "tile_px": 32,
+      "coverage_m2_planning": 25.0,
+      "mean_emissivity_planning": 0.5677636861801147,
+      "digital_best_confidence": 0.1926296141371184,
+      "digital_baseline_confidence": 0.1418961251475444,
+      "install_notes": "Planning only. Orient sheets with seam marks aligned. Re-audit after weather events. Not a field authorization."
+    }
+  ],
+  "bom_stub": [
+    {
+      "item": "Printed camo tile sheet (vinyl / mesh)",
+      "material_id": "mantle_tile",
+      "qty_per_m2": 1.0,
+      "status": "planning_only"
+    },
+    {
+      "item": "Low-e film accent strips",
+      "material_id": "low_e_film",
+      "qty_per_m2": 0.15,
+      "status": "planning_only"
+    },
+    {
+      "item": "Thermal blanket underlay (optional)",
+      "material_id": "thermal_blanket",
+      "qty_per_m2": 0.5,
+      "status": "planning_only"
+    },
+    {
+      "item": "Attachment hardware (zip ties / magnets / grommets)",
+      "material_id": null,
+      "qty_per_m2": 4.0,
+      "status": "planning_only"
+    }
+  ],
+  "materials_ref": {
+    "bare_metal": {
+      "name": "Weathered steel / aluminum",
+      "emissivity_lwir": 0.25
+    },
+    "utility_paint": {
+      "name": "Industrial gray paint",
+      "emissivity_lwir": 0.9
+    },
+    "camo_net": {
+      "name": "Commercial camo net proxy",
+      "emissivity_lwir": 0.85
+    },
+    "low_e_film": {
+      "name": "Low-emissivity film",
+      "emissivity_lwir": 0.15
+    },
+    "thermal_blanket": {
+      "name": "Thermal blanket / tarp",
+      "emissivity_lwir": 0.2
+    },
+    "mantle_tile": {
+      "name": "Mantle printed tile (planning)",
+      "emissivity_lwir": 0.55
+    }
+  },
+  "disclaimer": "BOM and coverage are planning stubs. No physical print or IR validation."
+}

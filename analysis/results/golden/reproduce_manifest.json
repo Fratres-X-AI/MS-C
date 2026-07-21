@@ -1,0 +1,21 @@
+{
+  "product": "MS-C Mantle",
+  "version": "0.1.0",
+  "seed": 7,
+  "steps": 40,
+  "detector": "surrogate_v1",
+  "evidence_class": "digital_surrogate_unvalidated",
+  "files": {
+    "kit_manifest.json": "b991b6d89db47183b50f53a7ce8e566bf89dff6e7f40933e101885b54ecb171b",
+    "scorecard.json": "d6b166db0c50dae3fd7f69061aa10851b054de76ef757e3aaf9861489d6197d8",
+    "tiles/pipeline_seed7_emis.png": "157f93da96eab1567d0d29cd7759b09d0582d0ba0f9bea76cfc9e81f232b787e",
+    "tiles/pipeline_seed7_sheet.png": "fc1c36f04974ed4cc6932f633f8600cfbb1d25f859f2f3fb64736f3e129206e8",
+    "tiles/pipeline_seed7_tile.png": "112567dbaf8c298a75f41dbd31a54fb0f69700242b483179181d1ceaf7c48d4c",
+    "tiles/substation_seed7_emis.png": "2bf798670cc0ff5a4702ae51419ac3160d7426d41a7118f131fe6719cb6e2209",
+    "tiles/substation_seed7_sheet.png": "80b474449c0a2783a0da0708e4d1ffcb4154d5660898f08a4490efdf753cd57f",
+    "tiles/substation_seed7_tile.png": "04cad57fd8b71bcbb41992778212b25344725b88eb3ed1c7d89e2ffe862da7f5",
+    "tiles/tank_pad_seed7_emis.png": "e93df54def353190b614c71f6efa95e09d10346a33b82e067254a9e2d3a5f73e",
+    "tiles/tank_pad_seed7_sheet.png": "045249e5bca445954f12e9d1d652525b9edd7bac2c86c2f009dc54cc01c63609",
+    "tiles/tank_pad_seed7_tile.png": "7ae505a89a49007520c6eeb5c1b92bf91f2ab0c9333fc19e2136d4869428766a"
+  }
+}

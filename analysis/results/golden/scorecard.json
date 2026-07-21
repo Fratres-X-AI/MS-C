@@ -1,0 +1,90 @@
+{
+  "summary": {
+    "detector": "surrogate",
+    "evidence_class": "digital_surrogate_unvalidated",
+    "sites": [
+      "substation",
+      "tank_pad",
+      "pipeline"
+    ],
+    "nominal_mean_collapse_vs_uncovered": 0.018153886151386005,
+    "adversarial_mean_collapse_vs_uncovered": 0.0,
+    "nominal_mean_mantle_confidence": 0.19074951492542902,
+    "adversarial_mean_mantle_confidence": 0.21675569480449033,
+    "note": "Planning MoE only (A-013). Not a UAS defeat rate. Adversarial stack uses held-out oblique+harsh lighting."
+  },
+  "by_site": {
+    "substation": {
+      "nominal": {
+        "uncovered": 0.20512245477778557,
+        "commercial": 0.4364426064314291,
+        "random_noise": 0.6244622225139002,
+        "mantle": 0.19395114570439934,
+        "collapse_vs_uncovered": 0.05446165845415802,
+        "collapse_vs_commercial": 0.5556090472233224
+      },
+      "adversarial": {
+        "uncovered": 0.19444589500872142,
+        "commercial": 0.4545261394316935,
+        "random_noise": 0.6056451619517053,
+        "mantle": 0.21397687655026285,
+        "collapse_vs_uncovered": 0.0,
+        "collapse_vs_commercial": 0.5292308670788352
+      },
+      "optimize": {
+        "steps": 40,
+        "baseline_score": 0.20512245477778557,
+        "best_score": 0.19395114570439934,
+        "seed": 7
+      }
+    },
+    "tank_pad": {
+      "nominal": {
+        "uncovered": 0.08975833374880235,
+        "commercial": 0.43322093268948614,
+        "random_noise": 0.6121943663295166,
+        "mantle": 0.18566778493476926,
+        "collapse_vs_uncovered": 0.0,
+        "collapse_vs_commercial": 0.5714247144473792
+      },
+      "adversarial": {
+        "uncovered": 0.08745137036462466,
+        "commercial": 0.45843165956942367,
+        "random_noise": 0.589402804883267,
+        "mantle": 0.21666269288431392,
+        "collapse_vs_uncovered": 0.0,
+        "collapse_vs_commercial": 0.5273827878994839
+      },
+      "optimize": {
+        "steps": 40,
+        "baseline_score": 0.08975833374880235,
+        "best_score": 0.18566778493476926,
+        "seed": 7
+      }
+    },
+    "pipeline": {
+      "nominal": {
+        "uncovered": 0.1418961251475444,
+        "commercial": 0.4356794401928653,
+        "random_noise": 0.6168734310990895,
+        "mantle": 0.1926296141371184,
+        "collapse_vs_uncovered": 0.0,
+        "collapse_vs_commercial": 0.5578638871463715
+      },
+      "adversarial": {
+        "uncovered": 0.15459633421506178,
+        "commercial": 0.46304949431702136,
+        "random_noise": 0.5957412423615025,
+        "mantle": 0.21962751497889427,
+        "collapse_vs_uncovered": 0.0,
+        "collapse_vs_commercial": 0.5256932192468201
+      },
+      "optimize": {
+        "steps": 40,
+        "baseline_score": 0.1418961251475444,
+        "best_score": 0.1926296141371184,
+        "seed": 7
+      }
+    }
+  }
+}
