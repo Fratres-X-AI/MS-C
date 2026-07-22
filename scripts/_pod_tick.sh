@@ -17,7 +17,9 @@ echo "nproc_lie=$(nproc)"
 echo "--- procs ---"
 ps aux | grep -E '_pod_sota_burn|optimize_pattern|ultralytics|python' | grep -v grep | head -12 || echo NO_PROCS
 echo "--- live ---"
-if [[ -f /workspace/MS-C/analysis/results/runs/sota_2h/live_status.json ]]; then
+if [[ -f /workspace/MS-C/analysis/results/runs/sota_max/live_status.json ]]; then
+  cat /workspace/MS-C/analysis/results/runs/sota_max/live_status.json
+elif [[ -f /workspace/MS-C/analysis/results/runs/sota_2h/live_status.json ]]; then
   cat /workspace/MS-C/analysis/results/runs/sota_2h/live_status.json
 elif [[ -f /workspace/MS-C/analysis/results/runs/sota_hour/live_status.json ]]; then
   cat /workspace/MS-C/analysis/results/runs/sota_hour/live_status.json
@@ -25,7 +27,9 @@ else
   echo NO_LIVE_STATUS
 fi
 echo "--- log ---"
-tail -n 22 /workspace/logs/msc_sota_2h.log 2>/dev/null \
-  || tail -n 22 /workspace/logs/msc_sota_burn.log 2>/dev/null \
+tail -n 28 /workspace/logs/msc_sota_abuse.log 2>/dev/null \
+  || tail -n 28 /workspace/logs/msc_sota_max.log 2>/dev/null \
+  || tail -n 28 /workspace/logs/msc_sota_burn.log 2>/dev/null \
+  || tail -n 28 /workspace/logs/msc_sota_2h.log 2>/dev/null \
   || echo NO_LOG
 EOF

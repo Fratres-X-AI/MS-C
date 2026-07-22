@@ -1,0 +1,101 @@
+# Fratres soft-kill / detect laundry list for placement optimizers + Wicked Web
+# Maturity: planning schema v0.1 — lobe/range bands are NOT validated performance
+schema_version: "0.1.0"
+owner: Fratres X AI
+notes: >
+  Placement tools consume mount_class, lobe_notes, range_band_m for siting.
+  Wicked Web consumes wickedweb_rung + magazine_unit for runtime doctrine.
+  Never treat range_band_m as certified engagement performance.
+
+catalog:
+  - id: MSC-MANTLE-KIT
+    class: passive_camo
+    role: persistent_VIS_IR_deny
+    product: MS-C Mantle
+    mount_class: surface_kit  # net / coating / tile on asset faces
+    lobe_notes: "Hemispheric / asset-facing; no active beam. Coverage = installed surfaces."
+    range_band_m: [0, 500]
+    magazine_unit: kit_refresh_months
+    wickedweb_rung: MANTLE_AUDIT
+    maturity_tier: T1
+    dazzler_present: false
+
+  - id: MSV-VEIL-G1
+    class: obscurant_grenade
+    role: transient_VIS_IR_obscure
+    product: MS-V Veil
+    mount_class: magazine_locker  # stored; hand/remote throw employment
+    lobe_notes: "Cloud volume ~employment doctrine; always pair with visual smoke."
+    range_band_m: [0, 80]
+    magazine_unit: veil_count
+    wickedweb_rung: VEIL
+    maturity_tier: T1
+    pairs_with: visual_smoke
+
+  - id: VIS-SMOKE-INV
+    class: visual_smoke
+    role: VIS_obscure_inventory
+    product: Partner / inventory AN-M8-class
+    mount_class: magazine_locker
+    lobe_notes: "VIS only; thermal often sees through. Required pair for MS-V MoE doctrine."
+    range_band_m: [0, 80]
+    magazine_unit: visual_smoke_count
+    wickedweb_rung: VEIL
+    maturity_tier: external
+
+  - id: MPLD-H1-MAST
+    class: laser_dazzler
+    role: directed_NIR_EO_deny
+    product: MPL-D
+    mount_class: fixed_mast_h1
+    lobe_notes: "Multi-point static NIR pattern; cue-quality dependent; NHZ applies. Not thermal."
+    range_band_m: [50, 500]  # planning band only — NOT certified
+    magazine_unit: dazzle_pulses
+    wickedweb_rung: DAZZLE
+    maturity_tier: T0
+    dazzler_present: true
+
+  - id: MPLD-H2-VEHICLE
+    class: laser_dazzler
+    role: directed_NIR_EO_deny
+    product: MPL-D
+    mount_class: vehicle_rws_adjacent
+    lobe_notes: "Same effector class; vehicle packaging secondary study."
+    range_band_m: [50, 500]
+    magazine_unit: dazzle_pulses
+    wickedweb_rung: DAZZLE
+    maturity_tier: T0
+    dazzler_present: true
+
+  - id: EW-RF-PARTNER
+    class: rf_ew
+    role: link_disrupt
+    product: Partner EW
+    mount_class: site_ew_box
+    lobe_notes: "RF propagation / jam lobe per vendor. Ineffective vs fiber-optic threats."
+    range_band_m: [0, 2000]
+    magazine_unit: ew_available
+    wickedweb_rung: EW
+    maturity_tier: external
+
+  - id: DET-EOIR-PTZ
+    class: detector
+    role: detect_track_cue
+    product: Partner EO/IR
+    mount_class: mast_ptz
+    lobe_notes: "Observation arc; must clear terrain/building mask (survey tool)."
+    range_band_m: [0, 3000]
+    magazine_unit: null
+    wickedweb_rung: CUE_SOURCE
+    maturity_tier: external
+
+  - id: DET-RADAR-CUAS
+    class: detector
+    role: detect_track_cue
+    product: Partner CUAS radar
+    mount_class: mast_radar
+    lobe_notes: "Volumetric lobe; survey tool places for approach-lane coverage."
+    range_band_m: [0, 5000]
+    magazine_unit: null
+    wickedweb_rung: CUE_SOURCE
+    maturity_tier: external

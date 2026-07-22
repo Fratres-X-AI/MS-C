@@ -121,8 +121,8 @@ def optimize_joint(
     )
     best_obj = best_metrics["objective"]
 
-    # Candidate batching: evaluate K mutants per GPU call cycle
-    k_batch = 4
+    # Candidate batching: evaluate K mutants per GPU call cycle (fat GPUs: 8)
+    k_batch = 8
     for i in range(0, steps, k_batch):
         cands = []
         cand_logits = []

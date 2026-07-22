@@ -8,7 +8,11 @@ pads, and pipeline corridors — the **passive DENY** layer beside active dazzle
 and transient obscuration.
 
 **Status:** Preliminary Design + digital prototype · **Version:** 0.1.0  
-**Repository:** https://github.com/Fratres-X-AI/MS-C
+**Repository:** https://github.com/Fratres-X-AI/MS-C *(private)*
+
+> **Maturity banner:** Preliminary Design · Digital **PASS** (G-DIG) · Physical print/IR **OPEN** · Field **BLOCKED** · Tier T1  
+> **Stack handoff:** Desktop `Fratres_Homeland_KillWeb_Handoff/` · Wicked-Web `docs/STACK_HANDOFF/`  
+> **Print path:** [docs/PRINT_SOW_COUPON_CAMPAIGN.md](docs/PRINT_SOW_COUPON_CAMPAIGN.md)
 
 > **Reviewers start here:** [Executive brief](docs/00-executive-brief.md) →
 > [Stakeholder one-pager](docs/STAKEHOLDER_ONE_PAGER.md) →
@@ -16,7 +20,8 @@ and transient obscuration.
 > [Verification matrix](rtm/verification_matrix.md)
 
 > **Conceptual design — NOT validation.** Digital surrogate MoE only.  
-> **Not a laser.** Not an obscurant grenade. Not a fielded stealth system.
+> **Not a laser.** Not an obscurant grenade. Not a fielded stealth system.  
+> **Placed by** partner survey tools; **audited by** Wicked Web — not a siting product.
 
 ---
 

@@ -7,8 +7,12 @@
 
 ## 1. Problem framing
 
-Deny EO/IR machine eyes on fixed soft targets (substations, pads, corridors)
-without lasers or obscurant clouds. Product form: coatings, nets, pattern kits.
+Deny EO/IR machine eyes on fixed soft targets without lasers or obscurant clouds.
+Product form: coatings, nets, pattern kits.
+
+**Rick-frame site classes (stack alignment):** stadium soft infrastructure · utility /
+substation · data-center pad — plus pads/corridors. Partner **survey/placement**
+tools site the kits; Wicked Web audits coverage — Mantle is not a siting product.
 
 ---
 

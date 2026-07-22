@@ -21,3 +21,7 @@ demo_outputs/
 weights/
 *.pt
 *.onnx
+
+# Ephemeral pod pulls
+analysis/results/pod_pull_*/
+analysis/results/LATEST_POD_PULL.txt
