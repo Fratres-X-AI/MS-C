@@ -1,10 +1,15 @@
 """Multi-objective Mantle attack: site-YOLO + multi-view + beat commercial camo.
 
 Maxxed for multi-process + batched YOLO predict.
+
+Collapse objective (MSC_OBJ_MODE=collapse, default): reward YOLO collapse vs
+uncovered and punish covered>uncovered inversions. Legacy mode keeps the old
+mean_yolo + beat_com objective.
 """
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 
 import numpy as np
@@ -76,8 +81,14 @@ def evaluate_joint(
     covered_imgs = [
         apply_pattern_to_scene(sc, pattern_rgb, pattern_emis, alpha=alpha).rgb for sc in scenes
     ]
+    unc_imgs = [sc.rgb for sc in scenes]
+    unc_scores = _batched_yolo_means(detector, unc_imgs)
     cov_scores = _batched_yolo_means(detector, covered_imgs)
-    mean_yolo = float(np.average(cov_scores, weights=[vs.weight for vs in views]))
+    weights = [vs.weight for vs in views]
+    mean_unc = float(np.average(unc_scores, weights=weights))
+    mean_yolo = float(np.average(cov_scores, weights=weights))
+    yolo_collapse = max(0.0, (mean_unc - mean_yolo) / max(mean_unc, 1e-6))
+    inversion_pen = max(0.0, mean_yolo - mean_unc)
 
     scene0 = scenes[0]
     c_rgb, c_e = commercial_camo_pattern(tile=pattern_rgb.shape[0], seed=seed + 11)
@@ -87,14 +98,32 @@ def evaluate_joint(
     beat_com = max(0.0, man - com + 0.02)
     uniq = int(np.unique(pattern_rgb.reshape(-1, 3), axis=0).shape[0])
     natural_pen = max(0.0, (3 - uniq) * 0.05)
-    objective = mean_yolo + 0.35 * beat_com + natural_pen
+
+    mode = os.environ.get("MSC_OBJ_MODE", "collapse").strip().lower()
+    w_collapse = float(os.environ.get("MSC_OBJ_COLLAPSE_W", "1.0"))
+    w_inv = float(os.environ.get("MSC_OBJ_INVERSION_W", "1.5"))
+    if mode == "legacy":
+        objective = mean_yolo + 0.35 * beat_com + natural_pen
+    else:
+        # Minimize: low covered conf, high collapse vs uncovered, no inversion.
+        objective = (
+            mean_yolo
+            - w_collapse * yolo_collapse
+            + 0.35 * beat_com
+            + natural_pen
+            + w_inv * inversion_pen
+        )
     return {
         "objective": objective,
         "mean_yolo_covered": mean_yolo,
+        "mean_yolo_uncovered": mean_unc,
+        "yolo_collapse": float(yolo_collapse),
+        "inversion_pen": float(inversion_pen),
         "mantle_nadir": float(man),
         "commercial_nadir": float(com),
         "uniq_colors": uniq,
         "beat_com_pen": float(beat_com),
+        "obj_mode": mode,
     }
 
 

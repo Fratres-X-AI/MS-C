@@ -14,11 +14,22 @@ export PYTHONUNBUFFERED=1
 export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"
 
 # Attack processes each load a YOLO on GPU. PRO 6000 96GB → pack hard, leave CPU headroom.
-GPU_WORKERS=$(( WORKERS * 3 / 4 ))
-if [[ "${GPU_WORKERS}" -lt 8 ]]; then GPU_WORKERS=8; fi
-if [[ "${GPU_WORKERS}" -gt 36 ]]; then GPU_WORKERS=36; fi
-if [[ "${GPU_WORKERS}" -ge "${WORKERS}" ]]; then
-  GPU_WORKERS=$((WORKERS - 4))
+# 4090_SAFE: env MSC_GPU_WORKERS / MSC_FORCE_4090 wins over PRO-6000 packing.
+GPU_NAME=$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -1 || true)
+if [[ -n "${MSC_GPU_WORKERS:-}" ]]; then
+  GPU_WORKERS="${MSC_GPU_WORKERS}"
+elif [[ "${GPU_NAME}" == *"4090"* ]] || [[ "${MSC_FORCE_4090:-0}" == "1" ]]; then
+  GPU_WORKERS=24
+  BATCH="${MSC_BATCH:-192}"
+  ATTACK_SIZE="${MSC_ATTACK_SIZE:-640}"
+  echo "4090_SAFE gpu_workers=${GPU_WORKERS} batch=${BATCH:-} attack_size=${ATTACK_SIZE:-}"
+else
+  GPU_WORKERS=$(( WORKERS * 3 / 4 ))
+  if [[ "${GPU_WORKERS}" -lt 8 ]]; then GPU_WORKERS=8; fi
+  if [[ "${GPU_WORKERS}" -gt 36 ]]; then GPU_WORKERS=36; fi
+  if [[ "${GPU_WORKERS}" -ge "${WORKERS}" ]]; then
+    GPU_WORKERS=$((WORKERS - 4))
+  fi
 fi
 # Ultralytics dataloader workers — never exceed cgroup
 ULTRA_WORKERS=$(( WORKERS / 2 ))
@@ -27,10 +38,13 @@ if [[ "${ULTRA_WORKERS}" -gt 16 ]]; then ULTRA_WORKERS=16; fi
 
 # Fat quality knobs (override via env)
 IMGSZ="${MSC_IMGSZ:-640}"
-ATTACK_SIZE="${MSC_ATTACK_SIZE:-512}"
-BATCH="${MSC_BATCH:-192}"
+ATTACK_SIZE="${ATTACK_SIZE:-${MSC_ATTACK_SIZE:-512}}"
+BATCH="${BATCH:-${MSC_BATCH:-192}}"
 MODEL_NAME="${MSC_YOLO_MODEL:-yolov8s.pt}"
 MINUTES="${MSC_BURN_MINUTES:-360}"
+if [[ "${GPU_NAME}" == *"4090"* ]] || [[ "${MSC_FORCE_4090:-0}" == "1" ]]; then
+  echo "4090_SAFE gpu_workers=${GPU_WORKERS} batch=${BATCH} attack_size=${ATTACK_SIZE}"
+fi
 
 START_TS=$(date +%s)
 DEADLINE=$((START_TS + MINUTES * 60))
@@ -187,12 +201,18 @@ with ProcessPoolExecutor(max_workers=n_workers) as ex:
             pattern_rgb=r["rgb"], pattern_emis=r["emis"], best_score=r["best_score"],
             baseline_score=r["baseline_score"], steps=r["steps"], site_class=r["site_class"], seed=r["seed"],
         )
+        def _rank(rr):
+            # Prefer YOLO collapse vs uncovered, then lower mantle conf.
+            base = max(float(rr.baseline_score), 1e-6)
+            collapse = max(0.0, (float(rr.baseline_score) - float(rr.best_score)) / base)
+            return (-collapse, float(rr.best_score))
         cur = best_by.get(res.site_class)
-        if cur is None or res.best_score < cur.best_score:
+        if cur is None or _rank(res) < _rank(cur):
             best_by[res.site_class] = res
         print(
             f"[w1-max] DONE n={round_i} site={res.site_class} base={res.baseline_score:.3f} "
-            f"best={res.best_score:.3f} in_flight={len(in_flight)} left={max(0,deadline-time.time()):.0f}s",
+            f"best={res.best_score:.3f} collapse={max(0.0,(res.baseline_score-res.best_score)/max(res.baseline_score,1e-6)):.3f} "
+            f"in_flight={len(in_flight)} left={max(0,deadline-time.time()):.0f}s",
             flush=True,
         )
         if time.time() < wave_end:
@@ -208,25 +228,35 @@ with ProcessPoolExecutor(max_workers=n_workers) as ex:
             for site, rr in best_by.items():
                 scene = generate_scene(site, seed=rr.seed, size=attack_size)
                 cov = apply_pattern_to_scene(scene, rr.pattern_rgb, rr.pattern_emis, alpha=0.72)
+                unc = float(det.mean_confidence(scene))
+                man = float(det.mean_confidence(cov))
                 yolo[site] = {
-                    "uncovered": round(det.mean_confidence(scene), 4),
-                    "mantle": round(det.mean_confidence(cov), 4),
+                    "uncovered": round(unc, 4),
+                    "mantle": round(man, 4),
+                    "collapse_vs_uncovered": round(max(0.0, (unc - man) / max(unc, 1e-6)), 4),
                 }
+            yolo_collapses = [v["collapse_vs_uncovered"] for v in yolo.values()]
+            yolo_mean_collapse = float(sum(yolo_collapses) / max(len(yolo_collapses), 1))
             card["burn"] = {
-                "wave": "1-max", "n": round_i, "gpu_workers": n_workers,
+                "wave": "1-max-collapse", "n": round_i, "gpu_workers": n_workers,
                 "attack_size": attack_size, "yolo_site_scores": yolo,
+                "yolo_mean_collapse_vs_uncovered": yolo_mean_collapse,
+                "obj_mode": os.environ.get("MSC_OBJ_MODE", "collapse"),
             }
+            # Keep surrogate summary, but surface YOLO collapse as the burn KPI.
+            card["summary"]["yolo_mean_collapse_vs_uncovered"] = yolo_mean_collapse
             (out / "scorecard.json").write_text(json.dumps(card, indent=2) + "\n")
             export_kit(keep, out)
             for site, rr in best_by.items():
                 np.savez(out / f"pattern_{site}.npz", rgb=rr.pattern_rgb, emis=rr.pattern_emis, seed=rr.seed)
             status = {
                 "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "stage": "wave1_max_parallel",
+                "stage": "wave1_max_collapse_obj",
                 "round": round_i,
                 "gpu_workers": n_workers,
                 "in_flight": len(in_flight),
                 "yolo_site_scores": yolo,
+                "yolo_mean_collapse_vs_uncovered": yolo_mean_collapse,
                 "seconds_left": max(0, deadline - time.time()),
                 "summary": card["summary"],
             }
@@ -370,11 +400,16 @@ with ProcessPoolExecutor(max_workers=n_workers) as ex:
             pattern_rgb=r["rgb"], pattern_emis=r["emis"], best_score=r["best_score"],
             baseline_score=r["baseline_score"], steps=r["steps"], site_class=r["site_class"], seed=r["seed"],
         )
+        def _rank(rr):
+            base = max(float(rr.baseline_score), 1e-6)
+            collapse = max(0.0, (float(rr.baseline_score) - float(rr.best_score)) / base)
+            return (-collapse, float(rr.best_score))
         cur = best_by.get(res.site_class)
-        if cur is None or res.best_score < cur.best_score:
+        if cur is None or _rank(res) < _rank(cur):
             best_by[res.site_class] = res
         print(
             f"[w3-max] DONE n={round_i} site={res.site_class} best={res.best_score:.3f} "
+            f"collapse={max(0.0,(res.baseline_score-res.best_score)/max(res.baseline_score,1e-6)):.3f} "
             f"inflight={len(in_flight)} left={max(0,deadline-time.time()):.0f}s",
             flush=True,
         )
